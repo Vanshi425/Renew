@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Online Thrift Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --soft-pink: #FFE5EC;
+            --peachy: #FFD6BA;
+            --mint: #D4F1E8;
+            --lavender: #E5DEFF;
+            --cream: #FFF8F0;
+            --coral: #FF9B9B;
+            --sage: #A8D5BA;
+            --periwinkle: #B4A7D6;
+            --text-dark: #4A4A4A;
+            --text-soft: #6B6B6B;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--soft-pink) 50%, var(--mint) 100%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(255, 155, 155, 0.1);
+            border-bottom: 3px solid var(--coral);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--coral), var(--periwinkle));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "♻️";
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn.home {
+            background: transparent;
+            color: var(--text-dark);
+        }
+
+        .nav-btn.home:hover {
+            background: var(--soft-pink);
+            transform: translateY(-2px);
+        }
+
+        .login {
+            background: linear-gradient(135deg, var(--coral), #FF7B7B);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 155, 155, 0.3);
+        }
+
+        .login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 155, 155, 0.4);
+        }
+
+        .register {
+            background: linear-gradient(135deg, var(--sage), #8DC7A0);
+            color: white;
+            box-shadow: 0 4px 15px rgba(168, 213, 186, 0.3);
+        }
+
+        .register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(168, 213, 186, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 5% 4rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--coral), var(--periwinkle), var(--sage));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-soft);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--coral), #FF7B7B);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 155, 155, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(255, 155, 155, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 3rem 5% 4rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+        }
+
+        .feature-card:nth-child(1) {
+            border-color: var(--sage);
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        .feature-card:nth-child(2) {
+            border-color: var(--peachy);
+            animation: fadeInUp 0.6s ease-out 0.8s both;
+        }
+
+        .feature-card:nth-child(3) {
+            border-color: var(--periwinkle);
+            animation: fadeInUp 0.6s ease-out 1s both;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) rotate(-2deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 4rem 5%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .products h2 {
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            border-color: var(--coral);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--lavender));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--coral);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge.condition {
+            background: var(--mint);
+            color: var(--text-dark);
+        }
+
+        .badge.category {
+            background: var(--lavender);
+            color: var(--text-dark);
+        }
+
+        .product-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .product-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-btn.view {
+            background: var(--periwinkle);
+            color: white;
+        }
+
+        .product-btn.view:hover {
+            background: #9B8DC4;
+            transform: translateY(-2px);
+        }
+
+        .product-btn.cart {
+            background: linear-gradient(135deg, var(--coral), #FF7B7B);
+            color: white;
+        }
+
+        .product-btn.cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 155, 155, 0.3);
+        }
+
+        /* Sell CTA Section */
+        .sell-cta {
+            padding: 5rem 5%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--lavender), var(--soft-pink));
+            margin: 4rem 0;
+        }
+
+        .sell-cta h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .sell-cta p {
+            font-size: 1.2rem;
+            color: var(--text-soft);
+            margin-bottom: 2rem;
+        }
+
+        .sell-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--sage), #8DC7A0);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(168, 213, 186, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .sell-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(168, 213, 186, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 3px solid var(--coral);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .footer p {
+            color: var(--text-soft);
+            margin-bottom: 0.5rem;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .footer-links a {
+            color: var(--coral);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--periwinkle);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--soft-pink);
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            animation: modalPop 0.4s ease-out;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .modal-content p {
+            color: var(--text-soft);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.login {
+            background: linear-gradient(135deg, var(--coral), #FF7B7B);
+            color: white;
+        }
+
+        .modal-btn.login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 155, 155, 0.3);
+        }
+
+        .modal-btn.cancel {
+            background: var(--soft-pink);
+            color: var(--text-dark);
+        }
+
+        .modal-btn.cancel:hover {
+            background: var(--peachy);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .features h2, .products h2, .sell-cta h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">ReWear</div>
+        <div class="nav-links">
+            <button class="nav-btn home">Home</button>
+            <a class=" login"  href="{% url 'login' %}">Login</a>
+            <a class=" register"  href="{% url 'register' %}">Register</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Online Thrift Store</h1>
+        <p>Buy & sell pre-loved fashion sustainably ♻️</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'shop' %}">Go to Shop</a>
+        {% else %}
+        <a href="{% url 'login' %}">Explore Collection</a>
+        {% endif %}
+
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Why Choose ReWear?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">♻️</div>
+                <h3>Sustainable Fashion</h3>
+                <p>Give clothes a second life and reduce fashion waste. Shop guilt-free and eco-friendly!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Affordable Prices</h3>
+                <p>Quality pre-loved fashion at prices that won't break the bank. Style on a budget!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Admin-Verified Products</h3>
+                <p>Every item is carefully reviewed and approved before listing. Shop with confidence!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image">👕</div>
+                <div class="product-info">
+                    <div class="product-name">Vintage Denim Jacket</div>
+                    <div class="product-price">₹899</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Like New</span>
+                        <span class="badge category">Outerwear</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, var(--mint), var(--peachy));">👗</div>
+                <div class="product-info">
+                    <div class="product-name">Floral Summer Dress</div>
+                    <div class="product-price">₹1,299</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Good</span>
+                        <span class="badge category">Dresses</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, var(--lavender), var(--mint));">👟</div>
+                <div class="product-info">
+                    <div class="product-name">Classic White Sneakers</div>
+                    <div class="product-price">₹1,499</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Like New</span>
+                        <span class="badge category">Footwear</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, var(--peachy), var(--soft-pink));">🎒</div>
+                <div class="product-info">
+                    <div class="product-name">Leather Backpack</div>
+                    <div class="product-price">₹2,199</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Good</span>
+                        <span class="badge category">Accessories</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, var(--soft-pink), var(--lavender));">🧥</div>
+                <div class="product-info">
+                    <div class="product-name">Cozy Wool Sweater</div>
+                    <div class="product-price">₹799</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Like New</span>
+                        <span class="badge category">Knitwear</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, var(--mint), var(--lavender));">👖</div>
+                <div class="product-info">
+                    <div class="product-name">Slim Fit Jeans</div>
+                    <div class="product-price">₹999</div>
+                    <div class="product-meta">
+                        <span class="badge condition">Good</span>
+                        <span class="badge category">Bottoms</span>
+                    </div>
+                    <div class="product-buttons">
+                        <button class="product-btn view">View Details</button>
+                        <button class="product-btn cart" onclick="showLoginModal()">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sell CTA Section -->
+    <section class="sell-cta">
+        <h2>Have items you no longer use?</h2>
+        <p>Turn your pre-loved fashion into cash and help others discover amazing finds!</p>
+        <button class="sell-btn" onclick="window.location.href='login.html'">Sell on ReWear</button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>About ReWear</h3>
+            <p>ReWear is your sustainable online thrift store where you can buy and sell pre-loved fashion.</p>
+            <p>Making fashion circular, one item at a time.</p>
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+                <a href="#help">Help Center</a>
+            </div>
+            <div class="copyright">
+                © 2026 ReWear - Youth Fest Project | Made with 💚 for sustainable fashion
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Required Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>🔒 Login Required</h3>
+            <p>Please login to continue with this action.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn login" onclick="window.location.href='login.html'">Go to Login</button>
+                <button class="modal-btn cancel" onclick="closeLoginModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll to products
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show login modal
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        // Close login modal
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        // Close modal on outside click
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+    </script>
+</body>
+</html>
