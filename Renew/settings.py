@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(8*_ca(nt+le(wj(rv(we)3(2$&#5u9x98^mh^!$jppsrxje9c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['renew-1-zdav.onrender.com','local host','127.0.0.1']
+ALLOWED_HOSTS = ['renew-1-zdav.onrender.com','localhost','127.0.0.1']
 
 
 # Application definition
